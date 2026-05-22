@@ -13,8 +13,13 @@ jobs:
       - uses: android-actions/setup-android@v3
       - run: yes | sdkmanager --licenses || true
       - run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
-      - run: chmod +x gradlew
-      - run: ./gradlew assembleDebug --no-daemon
+      - name: Install Gradle
+        run: |
+          wget -q https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          unzip -q gradle-8.2-bin.zip
+          export PATH=$PWD/gradle-8.2/bin:$PATH
+          gradle --version
+          gradle assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: MoushiHealth-APK
